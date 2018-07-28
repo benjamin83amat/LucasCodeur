@@ -40,6 +40,8 @@ window.onload = function()
 
     function Snake(body, direction)  
     {
+
+        
     	this.body = body;
         this.direction = direction;
     	this.draw = function()
