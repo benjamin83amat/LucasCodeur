@@ -8,11 +8,12 @@ window.onload = function()
     var snakee;
     var applee;
     var widthInBlocks = canvasWidth/blockSize;
+    var heightInBlocks = canvasHeight/blockSize;
     
     init ();
 
     function init()
-    {
+    { 
 	    var canvas = document.createElement('canvas');
 	    canvas.width = canvasWidth;
 	    canvas.height = canvasHeight;
@@ -28,11 +29,22 @@ window.onload = function()
 
     function refreshCanvas()
     {
-	    ctx.clearRect(0,0,canvasWidth,canvasHeight);
         snakee.advance();
-        snakee.draw();
-        applee.draw();
-	    setTimeout(refreshCanvas,delay);
+        if(snakee.checkCollision())
+        {
+            // GAME OVER
+        }
+        else
+        {
+            if(snakee.isEatingApple(applee))
+            {
+                applee.setNewPosition();
+            }
+	        ctx.clearRect(0,0,canvasWidth,canvasHeight);
+            snakee.draw();
+            applee.draw();
+	        setTimeout(refreshCanvas,delay);
+        }
     }
 
     function drawBlock(ctx, position)
@@ -110,11 +122,48 @@ window.onload = function()
     
 
         this.checkCollision = function()
-        {
+    {
         var wallCollision = false;
         var snakeCollision = false;
+        var head = this.body[0];
+        var rest = this.body.slice(1);
+        var snakeX = head[0];
+        var snakeY = head[1];
+        var minX = 0;
+        var minY = 0;
+        var maxX = widthInBlocks - 1;
+        var maxY = heightInBlocks - 1;
+        var isNotBetweenHorizontalWalls = snakeX < minX || snakeX > maxX;
+        var isNotBetweenVerticaiWalls = snakeY < minY || snakeY > maxY;
 
-        };
+        if(isNotBetweenHorizontalWalls || isNotBetweenVerticaiWalls)
+        {
+            wallCollision = true;
+        }
+
+        for(var i = 0; i < rest.length ; i++)
+        {
+            if(snakeX === rest[i][0] && snakeY === rest[i][1])
+            {
+                snakeCollision = true;
+            }
+        }
+
+        return wallCollision || snakeCollision;
+
+    };
+
+    this.isEatingApple = function(appleToEat)
+    {
+        var head = this.body[0];
+        if(head[0] === appleToEat.position[0] && head[1] === appleToEat.position[1])
+        
+            return true;
+        else
+            return false;
+    };    
+
+
     }
 
     function Apple(position)
@@ -126,11 +175,18 @@ window.onload = function()
             ctx.fillStyle = "#33cc33";
             ctx.beginPath();
             var radius = blockSize/2;
-            var x = position[0]*blockSize + radius;
-            var y = position[1]*blockSize + radius;
+            var x = this.position[0]*blockSize + radius;
+            var y = this.position[1]*blockSize + radius;
             ctx.arc(x,y, radius, 0, Math.PI*2, true);
             ctx.fill();
             ctx.restore();
+        };
+
+        this.setNewPosition = function()
+        {
+            var newX = Math.round(Math.random() * (widthInBlocks - 1));
+            var newY = Math.round(Math.random() * (heightInBlocks - 1));
+            this.position = [newX, newY];
         };
     }
 
