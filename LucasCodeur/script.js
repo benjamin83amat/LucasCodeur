@@ -38,7 +38,12 @@ window.onload = function()
         {
             if(snakee.isEatingApple(applee))
             {
-                applee.setNewPosition();
+                snakee.ateApple = true;
+                do
+                {
+                   applee.setNewPosition(); 
+                }
+                while(applee.isOnSnake(snakee))
             }
 	        ctx.clearRect(0,0,canvasWidth,canvasHeight);
             snakee.draw();
@@ -60,6 +65,7 @@ window.onload = function()
         
     	this.body = body;
         this.direction = direction;
+        this.ateApple = false;
     	this.draw = function()
     	{
     		ctx.save();
@@ -93,7 +99,10 @@ window.onload = function()
                     throw("Invalid Direction");
             }
             this.body.unshift(nextPosition);
-            this.body.pop();  
+            if(!this.ateApple)
+                this.body.pop();
+            else
+                this.ateApple = false;
 
         };
 
@@ -187,6 +196,21 @@ window.onload = function()
             var newX = Math.round(Math.random() * (widthInBlocks - 1));
             var newY = Math.round(Math.random() * (heightInBlocks - 1));
             this.position = [newX, newY];
+        };
+
+        this.isOnSnake = function(snakeToCheck)
+        {
+            var isOnSnake = false;
+
+            for(var i = 0 ; i < snakeToCheck.body.length; i++)
+            {
+                if(this.position[0] === snakeToCheck.body[i][0] && this.position[1] === snakeToCheck.body[i][1])
+                {
+                    isOnSnake = true;
+                }
+            }
+
+            return isOnSnake;
         };
     }
 
