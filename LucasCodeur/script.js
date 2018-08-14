@@ -1,19 +1,21 @@
+<<<<<<< HEAD
 window.onload = function()
 {
+=======
+window.onload = function(){
+>>>>>>> jquerry
     var canvasWidth = 900;
     var canvasHeight = 600;
     var blockSize = 30;
     var ctx;
+<<<<<<< HEAD
     var delay = 100;
     var snakee;
-    var applee;
-    var widthInBlocks = canvasWidth/blockSize;
-    var heightInBlocks = canvasHeight/blockSize;
-    
+
     init ();
 
     function init()
-    { 
+    {
 	    var canvas = document.createElement('canvas');
 	    canvas.width = canvasWidth;
 	    canvas.height = canvasHeight;
@@ -21,68 +23,151 @@ window.onload = function()
 	    document.body.appendChild(canvas);
 	    ctx = canvas.getContext('2d');
 	    snakee = new Snake([[6,4], [5,4], [4,4]], "right");
+	    refreshCanvas();
+    } 
+	    
+    function refreshCanvas()
+    {
+	    ctx.clearRect(0,0,canvasWidth,canvasHeight);
+        snakee.advance();
+        snakee.draw();
+	    setTimeout(refreshCanvas,delay);
+    }
+
+    function drawBlock(ctx, position)
+    {
+=======
+    var delay = 80;
+    var snakee;
+    var applee;
+    var widthInBlocks = canvasWidth/blockSize;
+    var heightInBlocks = canvasHeight/blockSize;
+    var score;
+    var timeout;
+    
+    init ();
+
+    function init(){ 
+	    var canvas = document.createElement('canvas');
+	    canvas.width = canvasWidth;
+	    canvas.height = canvasHeight;
+	    canvas.style.border = "25px solid gray";
+        canvas.style.margin = "-10px auto";
+        canvas.style.display = "block";
+        canvas.style.backgroundColor = "#ddd";
+	    document.body.appendChild(canvas);
+	    ctx = canvas.getContext('2d');
+	    snakee = new Snake([[6,4], [5,4], [4,4]], "right");
         applee = new Apple([10,10]);
+        score = 0;
 	    refreshCanvas();
     } 
 	    
 	    
 
-    function refreshCanvas()
-    {
+    function refreshCanvas(){
         snakee.advance();
-        if(snakee.checkCollision())
-        {
-            // GAME OVER
-        }
-        else
-        {
-            if(snakee.isEatingApple(applee))
-            {
+        if(snakee.checkCollision()){
+            gameOver();
+        } else {
+            if(snakee.isEatingApple(applee)){
+                score++;
                 snakee.ateApple = true;
-                do
-                {
+                do{
                    applee.setNewPosition(); 
-                }
-                while(applee.isOnSnake(snakee))
+                } while(applee.isOnSnake(snakee))
             }
 	        ctx.clearRect(0,0,canvasWidth,canvasHeight);
+            drawScore();
             snakee.draw();
             applee.draw();
-	        setTimeout(refreshCanvas,delay);
+	        timeout = setTimeout(refreshCanvas,delay);
         }
     }
 
-    function drawBlock(ctx, position)
-    {
+    function gameOver (){
+        ctx.save();
+        ctx.font = "bold 70px sans-serif";
+        ctx.fillStyle = "#000";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.strokeStyle = "white";
+        ctx.lineWidth = 5;
+        var centreX = canvasWidth / 2;
+        var centreY = canvasHeight / 2;
+        ctx.strokeText("Game Over", centreX, centreY - 180);
+        ctx.fillText("Game Over", centreX, centreY - 180);
+        ctx.font = "bold 30px sans-serif";
+        ctx.strokeText("Appuyez sur la touche Espace pour REJOUER", centreX, centreY - 120);
+        ctx.fillText("Appuyez sur la touche Espace pour REJOUER", centreX, centreY - 120);
+        ctx.restore();
+    }
+
+    function restart(){
+        snakee = new Snake([[6,4], [5,4], [4,4]], "right");
+        applee = new Apple([10,10]);
+        score = 0;
+        clearTimeout(timeout);
+        refreshCanvas();
+    }
+
+    function drawScore(){
+        ctx.save();
+        ctx.font = "bold 200px sans-serif";
+        ctx.fillStyle = "gray";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        var centreX = canvasWidth / 2;
+        var centreY = canvasHeight / 2;
+        ctx.fillText(score.toString(), centreX, centreY );
+        ctx.restore();
+    }
+
+    function drawBlock(ctx, position){
+>>>>>>> jquerry
     	var x = position[0] * blockSize;
     	var y = position[1] * blockSize;
     	ctx.fillRect(x,y, blockSize, blockSize);
     }
 
+<<<<<<< HEAD
     function Snake(body, direction)  
     {
-
-        
     	this.body = body;
         this.direction = direction;
-        this.ateApple = false;
     	this.draw = function()
     	{
     		ctx.save();
     		ctx.fillStyle = "#ff0000";
     		for(var i = 0; i < this.body.length; i++)
     		{
+=======
+    function Snake(body, direction){
+    	this.body = body;
+        this.direction = direction;
+        this.ateApple = false;
+    	this.draw = function(){
+    	ctx.save();
+    	ctx.fillStyle = "#CA01E1";
+		for(var i = 0; i < this.body.length; i++){
+>>>>>>> jquerry
     			drawBlock(ctx, this.body[i]);
     		}
     		ctx.restore();	
     	};
 
 
+<<<<<<< HEAD
         this.advance = function()
         {
             var nextPosition = this.body[0].slice();
             switch(this.direction)
             {
+=======
+        this.advance = function(){
+            var nextPosition = this.body[0].slice();
+            switch(this.direction){
+>>>>>>> jquerry
                 case "left":
                     nextPosition[0] -= 1;
                     break;
@@ -99,10 +184,8 @@ window.onload = function()
                     throw("Invalid Direction");
             }
             this.body.unshift(nextPosition);
-            if(!this.ateApple)
-                this.body.pop();
-            else
-                this.ateApple = false;
+<<<<<<< HEAD
+            this.body.pop();  
 
         };
 
@@ -111,6 +194,19 @@ window.onload = function()
             var allowedDirections;
             switch(this.direction)
             {
+=======
+            if(!this.ateApple)
+                this.body.pop();
+            else
+                this.ateApple = false;
+
+        };
+
+
+        this.setDirection = function(newDirection){
+            var allowedDirections;
+            switch(this.direction){
+>>>>>>> jquerry
                 case "left":
                 case "right":
                     allowedDirections = ["up", "down"];
@@ -123,15 +219,24 @@ window.onload = function()
                     throw("Invalid Direction");           
             }
 
+<<<<<<< HEAD
             if(allowedDirections.indexOf(newDirection) > -1)
             {
                 this.direction = newDirection;
             }
         };
+    }
+   
+    document.onkeydown = function handleKeyDown(e)
+    {
+=======
+            if(allowedDirections.indexOf(newDirection) > -1){
+                this.direction = newDirection;
+            }
+        };
     
 
-        this.checkCollision = function()
-    {
+        this.checkCollision = function(){
         var wallCollision = false;
         var snakeCollision = false;
         var head = this.body[0];
@@ -150,10 +255,8 @@ window.onload = function()
             wallCollision = true;
         }
 
-        for(var i = 0; i < rest.length ; i++)
-        {
-            if(snakeX === rest[i][0] && snakeY === rest[i][1])
-            {
+        for(var i = 0; i < rest.length ; i++){
+            if(snakeX === rest[i][0] && snakeY === rest[i][1]){
                 snakeCollision = true;
             }
         }
@@ -162,8 +265,7 @@ window.onload = function()
 
     };
 
-    this.isEatingApple = function(appleToEat)
-    {
+    this.isEatingApple = function(appleToEat){
         var head = this.body[0];
         if(head[0] === appleToEat.position[0] && head[1] === appleToEat.position[1])
         
@@ -175,13 +277,11 @@ window.onload = function()
 
     }
 
-    function Apple(position)
-    {
+    function Apple(position){
         this.position = position;
-        this.draw = function()
-        {
+        this.draw = function(){
             ctx.save();
-            ctx.fillStyle = "#33cc33";
+            ctx.fillStyle = "#E50202";
             ctx.beginPath();
             var radius = blockSize/2;
             var x = this.position[0]*blockSize + radius;
@@ -191,21 +291,17 @@ window.onload = function()
             ctx.restore();
         };
 
-        this.setNewPosition = function()
-        {
+        this.setNewPosition = function(){
             var newX = Math.round(Math.random() * (widthInBlocks - 1));
             var newY = Math.round(Math.random() * (heightInBlocks - 1));
             this.position = [newX, newY];
         };
 
-        this.isOnSnake = function(snakeToCheck)
-        {
+        this.isOnSnake = function(snakeToCheck){
             var isOnSnake = false;
 
-            for(var i = 0 ; i < snakeToCheck.body.length; i++)
-            {
-                if(this.position[0] === snakeToCheck.body[i][0] && this.position[1] === snakeToCheck.body[i][1])
-                {
+            for(var i = 0 ; i < snakeToCheck.body.length; i++){
+                if(this.position[0] === snakeToCheck.body[i][0] && this.position[1] === snakeToCheck.body[i][1]){
                     isOnSnake = true;
                 }
             }
@@ -217,8 +313,8 @@ window.onload = function()
         
 
 
-    document.onkeydown = function handleKeyDown(e)
-    {
+    document.onkeydown = function handleKeyDown(e){
+>>>>>>> jquerry
         var key = e.keyCode;
         var newDirection;
         switch(key)
@@ -235,6 +331,12 @@ window.onload = function()
             case 40:
                 newDirection = "down";
                     break;
+<<<<<<< HEAD
+=======
+            case 32:
+                restart();
+                return
+>>>>>>> jquerry
             default:
                 return;
         }
