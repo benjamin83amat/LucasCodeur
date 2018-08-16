@@ -1,6 +1,11 @@
 $(function(){
+    
+    $("#but1").click(function(){
+    	console.log($("#p1"));
+        //$("#p1").css("color");
+    });
 
-	$("#start").click(function(){
-		$("div").slideUp(3000).slideDown(3000).fadeOut(3000).fadeIn(3000);
-	});
+    //$("#but2").click(function(){
+       //$("#p1").removeClass("red");
+    //});
 });
