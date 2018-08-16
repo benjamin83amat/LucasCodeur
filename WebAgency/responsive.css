@@ -1,0 +1,46 @@
+@media all and (min-width: 768px) and (max-width: 1280px)
+{
+	.portofolio div {
+	    width: 31%; 
+	}
+	.text_image {
+		display: none;
+	}
+	#arrows {
+		display: none;
+	}
+	.image-holder {
+		margin: 0;
+		padding: 0;
+	}
+}
+
+@media all and (max-width: 768px)
+{
+	.text_image {
+		display: none;
+	}
+	.portofolio div {
+	    width: 60%; 
+	}
+	#contentserv {
+		flex-direction: column;
+		align-items: center;
+		margin: 20px;
+		width: 80%%;
+	}	
+	#arrows {
+		display: none;
+	}
+	.image-holder {
+		height: 100px;
+		align-content: center;
+	}
+	.nav {
+		flex-direction: column;
+	}
+	.design {
+		flex-direction: column;
+		align-items: center;
+	}
+}
